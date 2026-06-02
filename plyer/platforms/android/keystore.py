@@ -65,22 +65,32 @@ class AndroidKeystore(Keystore):
     def get_secret_key(servicename):
         KeyProperties = autoclass('android.security.keystore.KeyProperties')
         KeyGenerator = autoclass('javax.crypto.KeyGenerator')
-        KeyGenParameterSpec = autoclass('android.security.keystore.KeyGenParameterSpec$Builder')
+        KeyGenParameterSpec = autoclass(
+            'android.security.keystore.KeyGenParameterSpec$Builder'
+        )
         KeyStore = autoclass('java.security.KeyStore')
 
         key_store = KeyStore.getInstance("AndroidKeyStore")
         key_store.load(None)
 
         if not key_store.containsAlias(servicename):
-            builder = KeyGenParameterSpec(servicename,
-                                        KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+            purpose = (
+                KeyProperties.PURPOSE_ENCRYPT |
+                KeyProperties.PURPOSE_DECRYPT
+            )
+            builder = KeyGenParameterSpec(servicename, purpose)
             builder.setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-            builder.setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-            key_gen = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
+            builder.setEncryptionPaddings(
+                KeyProperties.ENCRYPTION_PADDING_NONE
+            )
+            key_gen = KeyGenerator.getInstance(
+                KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore"
+            )
             key_gen.init(builder.build())
             key_gen.generateKey()
 
         return key_store.getKey(servicename, None)
+
 
 def instance():
     return AndroidKeystore()

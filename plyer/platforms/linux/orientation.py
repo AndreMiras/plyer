@@ -30,8 +30,12 @@ class LinuxOrientation(Orientation):
         self.screen = self.screen.decode('utf-8').split('\n')[0]
 
         try:
+            command = (
+                f"xrandr -q --verbose | grep {self.screen} | "
+                "sed 's/primary //' | awk '{print $5}'"
+            )
             orientation = sb.check_output(
-                f"xrandr -q --verbose | grep {self.screen} | sed 's/primary //' | awk '{{print $5}}'",
+                command,
                 shell=True
             ).decode('utf-8').strip()
         except Exception:

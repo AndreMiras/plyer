@@ -47,7 +47,9 @@ class AndroidOrientation(Orientation):
             Surface.ROTATION_270: 'landscape-reversed',
         }
 
-        rotation = activity.getWindowManager().getDefaultDisplay().getRotation()
+        rotation = (
+            activity.getWindowManager().getDefaultDisplay().getRotation()
+        )
 
         return orientations.get(rotation, 'unknown')
 

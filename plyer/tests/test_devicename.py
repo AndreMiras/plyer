@@ -65,9 +65,22 @@ class TestDeviceName(unittest.TestCase):
                                      )
         devicename_instance = devicename.instance()
 
-        with patch.object(socket,
-                          'gethostname',
-                          return_value='mocked_macosx_hostname'
+        class LocalizedName:
+            @staticmethod
+            def UTF8String():
+                return 'mocked_macosx_hostname'
+
+        class CurrentHost:
+            localizedName = LocalizedName()
+
+        class NSHost:
+            @staticmethod
+            def currentHost():
+                return CurrentHost()
+
+        with patch.object(devicename,
+                          'autoclass',
+                          return_value=NSHost
                           ) as _:
 
             evaluated_device_name = devicename_instance.device_name

@@ -42,7 +42,7 @@ class Orientation:
 
     def get_orientation(self) -> str:
         '''
-        Return current screen rotation (landscape, landscape-reversed, portrait, portrait-reversed, unknown)
+        Return current screen rotation.
         '''
         return self._get_landscape()
 

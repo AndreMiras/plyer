@@ -27,7 +27,9 @@ class AndroidDeviceName(DeviceName):
         SettingsGlobal = autoclass('android.provider.Settings$Global')
 
         context = PythonActivity.mActivity
-        name = SettingsGlobal.getString(context.getContentResolver(), SettingsGlobal.DEVICE_NAME)
+        name = SettingsGlobal.getString(
+            context.getContentResolver(), SettingsGlobal.DEVICE_NAME
+        )
 
         if not name:
             name = Build.MODEL
