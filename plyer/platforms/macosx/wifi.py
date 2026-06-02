@@ -110,9 +110,10 @@ class OSXWifi(Wifi):
             for i in range(cnt):
                 if scan.allObjects().objectAtIndex_(i).ssid is not None:
                     try:
+                        network = scan.allObjects().objectAtIndex_(i)
                         self.names[
-                            scan.allObjects().objectAtIndex_(i).ssid.UTF8String()
-                        ] = scan.allObjects().objectAtIndex_(i)
+                            network.ssid.UTF8String()
+                        ] = network
                     except Exception:
                         pass
         else:

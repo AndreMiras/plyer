@@ -40,12 +40,16 @@ class OSXGPS(GPS):
         while self._run_loop_thread_allow:
             if self._is_running:
                 next_date = NSDate.dateWithTimeIntervalSinceNow_(0.01)
-                self._run_loop.runMode_beforeDate_('NSDefaultRunLoopMode', next_date)
+                self._run_loop.runMode_beforeDate_(
+                    'NSDefaultRunLoopMode', next_date
+                )
             time.sleep(0.1)
 
     def _start(self, **kwargs):
         if not hasattr(self, '_location_manager'):
-            self.on_status('provider-disabled', 'standard-macos-provider: denied')
+            self.on_status(
+                'provider-disabled', 'standard-macos-provider: denied'
+            )
             return
 
         min_distance = kwargs.get('minDistance')
@@ -53,7 +57,9 @@ class OSXGPS(GPS):
 
         if self._location_manager.authorizationStatus == 2:
             if self.on_status:
-                self.on_status('provider-disabled', 'standard-macos-provider: denied')
+                self.on_status(
+                    'provider-disabled', 'standard-macos-provider: denied'
+                )
 
         self._location_manager.startUpdatingLocation()
         self._is_running = True
